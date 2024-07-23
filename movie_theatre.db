@@ -1,0 +1,23 @@
+-- movies table
+CREATE TABLE movies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    kid_price REAL,
+    adult_price REAL
+);
+
+-- showtimes table
+CREATE TABLE showtimes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    movie_id INTEGER NOT NULL,
+    showtime TEXT NOT NULL,
+    remaining_tickets INTEGER DEFAULT 20,
+    FOREIGN KEY (movie_id) REFERENCES movies (id)
+);
+
+-- concessions table
+CREATE TABLE concessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    price REAL NOT NULL
+);
