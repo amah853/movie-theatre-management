@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Select Your Role</h2>
+    <ul>
+        <li><a href="{{ url_for('manager') }}">Manager</a></li>
+        <li><a href="{{ url_for('tickets') }}">Tickets</a></li>
+        <li><a href="{{ url_for('concessions') }}">Concessions</a></li>
+    </ul>
+{% endblock %}
