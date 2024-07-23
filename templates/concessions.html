@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Concessions</h2>
+
+    <h3>Add Items to Cart</h3>
+    <ul>
+        {% for item in items %}
+        <li>
+            {{ item.name }} - ${{ item.price }}
+            <button onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h3>Cart</h3>
+    <ul id="cart"></ul>
+    <p>Total: $<span id="total">0.00</span></p>
+    <button onclick="restartCart()">Restart</button>
+
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            total += price;
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartList = document.getElementById('cart');
+            const totalLabel = document.getElementById('total');
+            cartList.innerHTML = '';
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.innerText = `${item.name} - $${item.price}`;
+                cartList.appendChild(li);
+            });
+            totalLabel.innerText = total.toFixed(2);
+        }
+
+        function restartCart() {
+            cart = [];
+            total = 0;
+            updateCart();
+        }
+    </script>
+{% endblock %}
