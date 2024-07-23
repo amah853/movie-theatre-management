@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Manager</h2>
+    
+    <h3>Add Movie</h3>
+    <form action="{{ url_for('add_movie') }}" method="POST">
+        <label for="name">Movie Name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Add Movie</button>
+    </form>
+
+    <h3>Add Showtime</h3>
+    <form action="{{ url_for('add_showtime') }}" method="POST">
+        <label for="movie">Movie:</label>
+        <select id="movie" name="movie">
+            {% for movie in movies %}
+            <option value="{{ movie.id }}">{{ movie.name }}</option>
+            {% endfor %}
+        </select>
+        <label for="showtime">Showtime:</label>
+        <input type="text" id="showtime" name="showtime" required>
+        <button type="submit">Add Showtime</button>
+    </form>
+
+    <h3>Change Ticket Prices</h3>
+    <form action="{{ url_for('change_ticket_prices') }}" method="POST">
+        <label for="movie">Movie:</label>
+        <select id="movie" name="movie">
+            {% for movie in movies %}
+            <option value="{{ movie.id }}">{{ movie.name }}</option>
+            {% endfor %}
+        </select>
+        <label for="kid_price">Kid Price:</label>
+        <input type="text" id="kid_price" name="kid_price" required>
+        <label for="adult_price">Adult Price:</label>
+        <input type="text" id="adult_price" name="adult_price" required>
+        <button type="submit">Change Prices</button>
+    </form>
+
+    <h3>Add Concession Item</h3>
+    <form action="{{ url_for('add_concession_item') }}" method="POST">
+        <label for="name">Item Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" required>
+        <button type="submit">Add Item</button>
+    </form>
+
+    <h3>View Remaining Tickets</h3>
+    <form id="remaining-tickets-form">
+        <label for="showtime">Showtime:</label>
+        <select id="showtime" name="showtime">
+            <!-- Populate this with showtimes from the database -->
+        </select>
+        <button type="button" onclick="viewRemainingTickets()">View Remaining Tickets</button>
+    </form>
+    <div id="remaining-tickets-result"></div>
+
+    <script>
+        function viewRemainingTickets() {
+            var showtimeId = document.getElementById('showtime').value;
+            fetch('/get_remaining_tickets', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+
+
+                },
+                body: JSON.stringify({ showtime: showtimeId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('remaining-tickets-result').innerText = 'Remaining Tickets: ' + data.remaining_tickets;
+            });
+        }
+    </script>
+{% endblock %}
